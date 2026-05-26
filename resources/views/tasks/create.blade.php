@@ -216,7 +216,7 @@
             </div>
             <!-- Form Card -->
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-lg form-card">
-                <form action="{{ $action }}" method="POST" class="space-y-stack-lg">
+                <form action="{{ $action ?? route('tasks.store') }}" method="POST" class="space-y-stack-lg">
                     @csrf
                     @if (isset($method))
                         @method($method)
@@ -228,8 +228,8 @@
                             for="task-title">Task Title</label>
                         <input
                             class="w-full bg-transparent border-b-2 border-outline-variant focus:border-primary-container py-3 font-headline-md text-headline-md outline-none transition-all placeholder:text-outline"
-                            value="{{ $task->title ?? '' }}"
-                            id="task-title" name='title' placeholder="What needs to be done?" type="text" />
+                            value="{{ $task->title ?? '' }}" id="task-title" name='title'
+                            placeholder="What needs to be done?" type="text" />
                     </div>
                     <!-- Description -->
                     <div>
@@ -237,8 +237,7 @@
                             for="description">Description</label>
                         <textarea
                             class="w-full rounded-lg border border-outline-variant focus:border-primary-container focus:ring-1 focus:ring-primary-container p-3 font-body-md text-body-md bg-white transition-all outline-none resize-none"
-                            value="{{ $task->description ?? '' }}"
-                            name='description' id="description" placeholder="Add some details or notes..." rows="3"></textarea>
+                            name='description' id="description" placeholder="Add some details or notes..." rows="3">{{ old('description', $task->description ?? '') }}</textarea>
                     </div>
                     <!-- Grid for Date, Time, and Priority -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
@@ -251,7 +250,8 @@
                                     class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary-container">event</span>
                                 <input
                                     class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-outline-variant focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md bg-white outline-none transition-all"
-                                    id="due-date" type="date" />
+                                    value="{{ isset($task->due_date) ? \Carbon\Carbon::parse($task->due_date)->format('Y-m-d') : '' }}"
+                                    name="due_date" id="due-date" type="date" />
                             </div>
                         </div>
                         <!-- Due Time -->
@@ -263,6 +263,7 @@
                                     class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary-container">schedule</span>
                                 <input
                                     class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-outline-variant focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md bg-white outline-none transition-all"
+                                    value="{{ isset($task->due_time) ? $task->due_time : '' }}" name="due_time"
                                     id="due-time" type="time" />
                             </div>
                         </div>
@@ -274,29 +275,32 @@
                             <label
                                 class="font-label-md text-label-md text-on-surface-variant block mb-stack-sm">Priority</label>
                             <div class="flex p-1 bg-surface-container rounded-lg gap-1">
-                                <button
-                                    class="flex-1 py-1.5 rounded-md text-label-md font-label-md transition-all bg-white text-secondary shadow-sm"
-                                    id="btn-low" onclick="setPriority('low')" type="button">Low</button>
-                                <button
-                                    class="flex-1 py-1.5 rounded-md text-label-md font-label-md transition-all text-on-surface-variant hover:bg-surface-container-high"
-                                    id="btn-medium" onclick="setPriority('medium')" type="button">Medium</button>
-                                <button
-                                    class="flex-1 py-1.5 rounded-md text-label-md font-label-md transition-all text-on-surface-variant hover:bg-surface-container-high"
-                                    id="btn-high" onclick="setPriority('high')" type="button">High</button>
+                                <button type="button" id="btn-low" onclick="setPriority(3,'low')">
+                                    Low
+                                </button>
+
+                                <button type="button" id="btn-medium" onclick="setPriority(2,'medium')">
+                                    Medium
+                                </button>
+
+                                <button type="button" id="btn-high" onclick="setPriority(1,'high')">
+                                    High
+                                </button><input value="{{ old('priority_id', $task->priority_id ?? '') }}"
+                                type="hidden"
+                                name="priority_id" id="priority-input">
                             </div>
                         </div>
                         <!-- Category Selection -->
                         <div>
                             <label class="font-label-md text-label-md text-on-surface-variant block mb-stack-sm"
                                 for="category">Category</label>
-                            <select
-                                class="w-full px-4 py-2.5 rounded-lg border border-outline-variant focus:border-primary-container focus:ring-1 focus:ring-primary-container font-body-md text-body-md bg-white outline-none transition-all appearance-none cursor-pointer"
-                                id="category">
-                                <option value="work">💼 Work</option>
-                                <option value="personal">🏠 Personal</option>
-                                <option value="health">🧘 Health</option>
-                                <option value="finance">💳 Finance</option>
-                                <option value="other">✨ Other</option>
+                            <select name="category_id" id="category">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ $category->id == old('category_id', $task->category_id ?? '') ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -325,7 +329,8 @@
         </div>
     </main>
     <script>
-        function setPriority(level) {
+        function setPriority(id, level) {
+            document.getElementById('priority-input').value = id;
             const btns = {
                 low: document.getElementById('btn-low'),
                 medium: document.getElementById('btn-medium'),
@@ -360,6 +365,24 @@
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             }, 100);
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const currentPriority =
+                document.getElementById('priority-input').value;
+
+            if (currentPriority == 1) {
+                setPriority(1, 'low');
+            }
+
+            if (currentPriority == 2) {
+                setPriority(2, 'medium');
+            }
+
+            if (currentPriority == 3) {
+                setPriority(3, 'high');
+            }
+
         });
     </script>
 </body>

@@ -302,7 +302,7 @@
                                     <span
                                         class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
                                         <span class="material-symbols-outlined text-[14px]">calendar_today</span>
-                                        Due Today, 5:00 PM
+                                        {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M j, Y g:i A') : 'No due date' }}
                                     </span>
                                     <span
                                         class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">{{ $task->category->name }}</span>
