@@ -269,22 +269,19 @@
                 <div class="flex items-center gap-2 pr-4 border-r border-outline-variant">
                     <span
                         class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Priority</span>
-                    <button
-                        class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-label-sm font-label-sm hover:brightness-95 transition-all">High</button>
-                    <button
-                        class="px-3 py-1 bg-surface-variant text-on-secondary-fixed-variant rounded-full text-label-sm font-label-sm hover:brightness-95 transition-all">Medium</button>
-                    <button
-                        class="px-3 py-1 bg-secondary-container text-on-secondary-fixed-variant rounded-full text-label-sm font-label-sm hover:brightness-95 transition-all">Low</button>
+                    @foreach ($priorities as $priority)
+                        <a
+                        href="{{ route('tasks.index', ['priority' => strtolower($priority['name'])]) }}"
+                            class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-label-sm font-label-sm hover:brightness-95 transition-all">{{ $priority['name'] }}</a>
+                    @endforeach
                 </div>
                 <div class="flex items-center gap-2">
                     <span
                         class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Category</span>
-                    <button
-                        class="px-3 py-1 bg-surface-container-highest text-primary rounded-full text-label-sm font-label-sm hover:bg-primary hover:text-white transition-all">Work</button>
-                    <button
-                        class="px-3 py-1 bg-surface-container-highest text-primary rounded-full text-label-sm font-label-sm hover:bg-primary hover:text-white transition-all">Personal</button>
-                    <button
-                        class="px-3 py-1 bg-surface-container-highest text-primary rounded-full text-label-sm font-label-sm hover:bg-primary hover:text-white transition-all">Health</button>
+                    @foreach ($categories as $category)
+                        <a href="{{ route('tasks.index', ['category' => strtolower($category['name'])]) }}"
+                            class="px-3 py-1 bg-surface-container-highest text-primary rounded-full text-label-sm font-label-sm hover:bg-primary hover:text-white transition-all">{{ $category['name'] }}</a>
+                    @endforeach
                 </div>
             </div>
             <!-- Bento Layout Content -->
@@ -308,11 +305,11 @@
                                         Due Today, 5:00 PM
                                     </span>
                                     <span
-                                        class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">Work</span>
+                                        class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">{{ $task->category->name }}</span>
                                 </div>
                             </div>
                             <span
-                                class="px-2 py-1 bg-error-container text-on-error-container rounded-lg text-label-sm font-label-sm">High</span>
+                                class="px-2 py-1 bg-error-container text-on-error-container rounded-lg text-label-sm font-label-sm">{{ $task->priority->name }}</span>
                             <div
                                 class="md:col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <a href='{{ route('tasks.edit', $task->id) }}'
