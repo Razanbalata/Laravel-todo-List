@@ -16,6 +16,9 @@ class TaskSeeder extends Seeder
         Task::create([
             'title' => 'Learn Laravel Basics',
             'description' => 'Understand routes, controllers and models',
+            'category_id' => 1,
+            'priority_id' => 1,
+            'due_date' => now(),
             'is_completed' => false,
             'user_id' => 1
         ]);
@@ -23,6 +26,9 @@ class TaskSeeder extends Seeder
         Task::create([
             'title' => 'Build ToDo App',
             'description' => 'Create full CRUD system',
+            'category_id' => 1,
+            'priority_id' => 1,
+            'due_date' => now(),
             'is_completed' => false,
             'user_id' => 1
         ]);
@@ -30,6 +36,9 @@ class TaskSeeder extends Seeder
         Task::create([
             'title' => 'Practice PHP',
             'description' => 'Improve backend skills',
+            'category_id' => 2,
+            'priority_id' => 2,
+            'due_date' => now(),
             'is_completed' => true,
             'user_id' => 1
         ]);

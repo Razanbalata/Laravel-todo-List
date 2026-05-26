@@ -257,8 +257,7 @@
                         <span class="material-symbols-outlined text-[18px]">filter_list</span>
                         Filters
                     </button>
-                    <a
-                    href="{{ route('tasks.create') }}"
+                    <a href="{{ route('tasks.create') }}"
                         class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md">
                         <span class="material-symbols-outlined text-[18px]">add</span>
                         Add Task
@@ -292,49 +291,49 @@
             <div class="grid grid-cols-12 gap-gutter-desktop">
                 <!-- Main Task List Column -->
                 <div class="col-span-12 lg:col-span-8 space-y-4">
-                   @foreach ($tasks as $task)
-                    <div
-                        class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-all group">
-                        <input
-                            class="task-checkbox w-5 h-5 rounded-full border-2 border-outline-variant text-secondary focus:ring-secondary cursor-pointer"
-                            id="task{{ $task->id }}" type="checkbox">
-                        <div class="flex-grow">
-                            <label
-                                class="font-body-lg text-body-lg text-on-surface block cursor-pointer transition-colors"
-                                for="task{{ $task->id }}">{{ $task->title }}</label>
-                            <div class="flex items-center gap-4 mt-1">
-                                <span
-                                    class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
-                                    <span class="material-symbols-outlined text-[14px]">calendar_today</span>
-                                    Due Today, 5:00 PM
-                                </span>
-                                <span
-                                    class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">Work</span>
+                    @foreach ($tasks as $task)
+                        <div
+                            class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-all group">
+                            <input
+                                class="task-checkbox w-5 h-5 rounded-full border-2 border-outline-variant text-secondary focus:ring-secondary cursor-pointer"
+                                id="task{{ $task->id }}" type="checkbox">
+                            <div class="flex-grow">
+                                <label
+                                    class="font-body-lg text-body-lg text-on-surface block cursor-pointer transition-colors"
+                                    for="task{{ $task->id }}">{{ $task->title }}</label>
+                                <div class="flex items-center gap-4 mt-1">
+                                    <span
+                                        class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                        Due Today, 5:00 PM
+                                    </span>
+                                    <span
+                                        class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">Work</span>
+                                </div>
+                            </div>
+                            <span
+                                class="px-2 py-1 bg-error-container text-on-error-container rounded-lg text-label-sm font-label-sm">High</span>
+                            <div
+                                class="md:col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <a href='{{ route('tasks.edit', $task->id) }}'
+                                    class="p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary rounded-lg transition-all"
+                                    title="Edit">
+                                    <span class="material-symbols-outlined" data-icon="edit">edit</span>
+                                </a>
+
+                                <button
+                                    onclick="confirm('Are you sure?') ? document.getElementById('deletetask{{ $task->id }}').submit() : null"
+                                    class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-all"
+                                    title="More">
+                                    <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                                </button>
+                                <form style="display:none;" id="deletetask{{ $task->id }}"
+                                    action="{{ route('tasks.destroy', $task->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                             </div>
                         </div>
-                        <span
-                            class="px-2 py-1 bg-error-container text-on-error-container rounded-lg text-label-sm font-label-sm">High</span>
-                        <div
-                                        class="md:col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <a
-                                        href='{{ route('tasks.edit', $task->id) }}'
-                                            class="p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary rounded-lg transition-all"
-                                            title="Edit">
-                                            <span class="material-symbols-outlined" data-icon="edit">edit</span>
-                                        </a>
-                                        
-                                        <button
-                                        onclick="confirm('Are you sure?') ? document.getElementById('deletetask{{ $task->id }}').submit() : null"
-                                            class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-all"
-                                            title="More">
-                                            <span class="material-symbols-outlined"
-                                                data-icon="delete">delete</span>
-                                        </button>
-                                        <form style="display:none;" id="deletetask{{ $task->id }}" action="{{ route('tasks.destroy',$task->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    </div></div>
                     @endforeach
                 </div>
                 <!-- Right Column (Stats & Visual) -->
