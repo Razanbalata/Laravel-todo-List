@@ -380,7 +380,7 @@
                                 class="w-full flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-all">
                                 <div class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-primary">key</span>
-                                    <span class="font-label-md text-label-md">Change Password</span>
+                                    <a href="{{ route('profile.password.edit') }}" class="font-label-md text-label-md">Change Password</a>
                                 </div>
                                 <span class="material-symbols-outlined text-sm">chevron_right</span>
                             </button>
