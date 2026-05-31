@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -40,18 +41,18 @@ class ProfileController extends Controller
     }
     public function updatePassword(Request $request)
     {
-       // dd($request->all());
+        // dd($request->all());
         $request->validate([
             'current_password' => ['required'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
-       // dd('Validation Passed');
-        
+        // dd('Validation Passed');
+
         if (! Hash::check(
             $request->current_password,
             Auth::user()->password
         )) {
-           // dd(Auth::user()->password);
+            // dd(Auth::user()->password);
             return back()->withErrors([
                 'current_password' => 'Current password is incorrect.'
             ]);
@@ -63,6 +64,28 @@ class ProfileController extends Controller
         return redirect()
             ->route('profile.show')
             ->with('success', 'Profile updated successfully');
+    }
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'max:2048'],
+        ]);
 
+        $user = Auth::user();
+
+        // حذف الصورة القديمة (إذا موجودة)
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        // رفع الصورة الجديدة
+        $path = $request->file('avatar')->store('avatars', 'public');
+
+        // حفظ المسار في الداتابيس
+        $user->update([
+            'avatar' => $path,
+        ]);
+
+        return back()->with('success', 'Avatar updated successfully');
     }
 }

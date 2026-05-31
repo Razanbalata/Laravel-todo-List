@@ -27,4 +27,6 @@ Route::middleware('auth')->group(function () {
         '/profile/password',
         [ProfileController::class, 'updatePassword']
     )->name('profile.password.update');
+    Route::put('/profile/avatar', [ProfileController::class, 'updateAvatar'])
+    ->name('profile.avatar.update');
 });

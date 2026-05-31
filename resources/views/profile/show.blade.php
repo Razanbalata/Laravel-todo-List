@@ -218,16 +218,25 @@
             <!-- Profile Header Card -->
             <div
                 class="glass-card rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <div class="relative group">
-                    <img alt="User Profile"
-                        class="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover transition-transform group-hover:scale-105"
-                        data-alt="A professional headshot of a person with a warm and approachable expression, set against a soft, out-of-focus modern office background. The lighting is natural and flattering, emphasizing a professional yet calm aura. The overall aesthetic is clean and high-end, utilizing a light-mode color palette with subtle blue and grey undertones, perfectly suited for a productivity app interface."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBejaqFDvDKfpGiLnRX8V4dt3rhc1peiPzqO9lxPu__bN-6xevdvJNd020I5hcew4IEctjUKsZpidAfOYhZB21yeFDdVM_rpuz95FcKgJbYve5dwrLbVuhw0h8dzQgd13Uf7wYoC3YbqETvFe2C0buGIsfobYJt-dP5K35pB5eY5X2JEZDP55qIJqLdkmn8YLy8Eottt8YsAv6Jskxty7lbqIKjNNWTq7JeMa4XxCeIJS1aYGjnWzOJaJjFs6FZl8LkAGcV-bHcebN">
-                    <button
-                        class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all">
-                        <span class="material-symbols-outlined text-sm">edit</span>
-                    </button>
-                </div>
+                <form action="{{ route('profile.avatar.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="relative group">
+
+                        <input type="file" name="avatar" id="avatarInput" class="hidden" />
+
+                        <img alt="User Profile"
+                            class="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover transition-transform group-hover:scale-105"
+                            data-alt="A professional headshot of a person with a warm and approachable expression, set against a soft, out-of-focus modern office background. The lighting is natural and flattering, emphasizing a professional yet calm aura. The overall aesthetic is clean and high-end, utilizing a light-mode color palette with subtle blue and grey undertones, perfectly suited for a productivity app interface."
+                            src="{{ auth()->user()->avatar
+                                ? asset('storage/' . auth()->user()->avatar)
+                                : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}">
+                        <button onclick="document.getElementById('avatarInput').click()"
+                            class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-sm">edit</span>
+                        </button>
+                    </div>
+                </form>
                 <div class="text-center md:text-left flex-1">
                     <h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">{{ auth()->user()->name }}</h2>
                     <p class="font-body-lg text-body-lg text-on-surface-variant mb-4">{{ auth()->user()->email }}</p>
@@ -241,11 +250,10 @@
                     </div>
                 </div>
                 <adiv class="flex gap-3">
-                    <a
-                    href="{{ route("profile.edit") }}"
+                    <a href="{{ route('profile.edit') }}"
                         class="px-6 py-2.5 bg-primary text-white rounded-lg font-label-md hover:opacity-90 active:scale-95 transition-all">
                         Edit Profile
-                </a>
+                    </a>
                 </adiv>
             </div>
             <!-- Bento Stats Grid -->
@@ -380,7 +388,8 @@
                                 class="w-full flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-all">
                                 <div class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-primary">key</span>
-                                    <a href="{{ route('profile.password.edit') }}" class="font-label-md text-label-md">Change Password</a>
+                                    <a href="{{ route('profile.password.edit') }}"
+                                        class="font-label-md text-label-md">Change Password</a>
                                 </div>
                                 <span class="material-symbols-outlined text-sm">chevron_right</span>
                             </button>
