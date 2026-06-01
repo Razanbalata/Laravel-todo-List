@@ -218,12 +218,11 @@
             <!-- Profile Header Card -->
             <div
                 class="glass-card rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <form action="{{ route('profile.avatar.update') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+                <form>
+
                     <div class="relative group">
 
-                        <input type="file" name="avatar" id="avatarInput" class="hidden" />
+
 
                         <img alt="User Profile"
                             class="w-32 h-32 rounded-full border-4 border-white shadow-md object-cover transition-transform group-hover:scale-105"
@@ -231,7 +230,7 @@
                             src="{{ auth()->user()->avatar
                                 ? asset('storage/' . auth()->user()->avatar)
                                 : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}">
-                        <button onclick="document.getElementById('avatarInput').click()"
+                        <button {{-- onclick="document.getElementById('avatarInput').click()" --}}
                             class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-110 active:scale-95 transition-all">
                             <span class="material-symbols-outlined text-sm">edit</span>
                         </button>
