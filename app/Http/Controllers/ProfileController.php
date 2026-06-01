@@ -21,15 +21,21 @@ class ProfileController extends Controller
     }
     public function update(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email'],
-        ]);
-
-        Auth::user()->update([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
-        ]);
+        ];
+
+        if ($request->hasFile('avatar')) {
+
+            if (Auth::user()->avatar) {
+                Storage::disk('public')->delete(Auth::user()->avatar);
+            }
+
+            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        Auth::user()->update($data);
 
         return redirect()
             ->route('profile.show')
@@ -65,27 +71,27 @@ class ProfileController extends Controller
             ->route('profile.show')
             ->with('success', 'Profile updated successfully');
     }
-    public function updateAvatar(Request $request)
-    {
-        $request->validate([
-            'avatar' => ['required', 'image', 'max:2048'],
-        ]);
+    // public function updateAvatar(Request $request)
+    // {
+    //     $request->validate([
+    //         'avatar' => ['required', 'image', 'max:2048'],
+    //     ]);
 
-        $user = Auth::user();
+    //     $user = Auth::user();
 
-        // حذف الصورة القديمة (إذا موجودة)
-        if ($user->avatar) {
-            Storage::disk('public')->delete($user->avatar);
-        }
+    //     // حذف الصورة القديمة (إذا موجودة)
+    //     if ($user->avatar) {
+    //         Storage::disk('public')->delete($user->avatar);
+    //     }
 
-        // رفع الصورة الجديدة
-        $path = $request->file('avatar')->store('avatars', 'public');
+    //     // رفع الصورة الجديدة
+    //     $path = $request->file('avatar')->store('avatars', 'public');
 
-        // حفظ المسار في الداتابيس
-        $user->update([
-            'avatar' => $path,
-        ]);
+    //     // حفظ المسار في الداتابيس
+    //     $user->update([
+    //         'avatar' => $path,
+    //     ]);
 
-        return back()->with('success', 'Avatar updated successfully');
-    }
+    //     return back()->with('success', 'Avatar updated successfully');
+    // }
 }
