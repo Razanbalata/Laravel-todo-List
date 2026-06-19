@@ -8,10 +8,10 @@ Route::get('/', function () {
 });
 Route::get('/dashboard', function(){
     return view('dashboard.index');
-});
+})->name('dashboard');
 Route::get('/calender', function(){
     return view('calender.calender');
-});
+})->name('calendar');
 Route::get('/tasks', [TaskController::class, 'index']);
 
 Route::resource('tasks', TaskController::class);
