@@ -135,10 +135,14 @@
                                 </div>
                             </div>
                             <div class="flex bg-surface-container p-1 rounded-lg">
-                                <button
-                                    class="px-3 py-1 bg-white shadow-sm rounded-md text-label-sm font-label-md">Light</button>
-                                <button
-                                    class="px-3 py-1 text-on-surface-variant text-label-sm font-label-md hover:text-on-surface">Dark</button>
+                                <button id="lightBtn"
+                                    class="px-3 py-1 rounded-md text-label-sm font-label-md transition-all duration-200">
+                                    Light
+                                </button>
+                                <button id="darkBtn"
+                                    class="px-3 py-1 rounded-md text-label-sm font-label-md transition-all duration-200">
+                                    Dark
+                                </button>
                             </div>
                         </div>
                         <!-- Focus Mode -->
@@ -261,5 +265,53 @@
                 card.style.transform = 'translateY(0)';
             });
         });
+
+        // الإمساك بالعناصر من الصفحة
+const lightBtn = document.getElementById('lightBtn');
+const darkBtn = document.getElementById('darkBtn');
+const htmlElement = document.documentElement;
+
+// دالة لتحديث مظهر الأزرار (إضافة الخلفية البيضاء للزر الفعّال)
+function updateButtonUI(theme) {
+    if (theme === 'dark') {
+        darkBtn.classList.add('bg-white', 'shadow-sm', 'text-on-surface');
+        darkBtn.classList.remove('text-on-surface-variant');
+        
+        lightBtn.classList.remove('bg-white', 'shadow-sm', 'text-on-surface');
+        lightBtn.classList.add('text-on-surface-variant');
+    } else {
+        lightBtn.classList.add('bg-white', 'shadow-sm', 'text-on-surface');
+        lightBtn.classList.remove('text-on-surface-variant');
+        
+        darkBtn.classList.remove('bg-white', 'shadow-sm', 'text-on-surface');
+        darkBtn.classList.add('text-on-surface-variant');
+    }
+}
+
+// 1. الفحص الأولي عند تحميل الصفحة
+const savedTheme = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    htmlElement.classList.add('dark');
+    updateButtonUI('dark');
+} else {
+    htmlElement.classList.remove('dark');
+    updateButtonUI('light');
+}
+
+// 2. أحداث الضغط على الأزرار (Event Listeners)
+lightBtn.addEventListener('click', () => {
+    htmlElement.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
+    updateButtonUI('light');
+});
+
+darkBtn.addEventListener('click', () => {
+    htmlElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+    updateButtonUI('dark');
+});
+
     </script>
 </x-layout>

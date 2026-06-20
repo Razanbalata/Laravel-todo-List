@@ -8,4 +8,44 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* ======================================================= */
+    /* 1. ألوان تباين عالي للوضع الفاتح (Light Mode)            */
+    /* ======================================================= */
+    --color-primary: #4f46e5;            /* بنفسجي نيوني واضح Indigo 600 */
+    --color-primary-container: #e0e7ff;  /* خلفية الأيقونات (فاتح جداً) */
+    
+    --color-page-bg: #f8fafc;            /* خلفية الصفحة: رمادي جليدي ناصع Slate 50 */
+    --color-surface-container: #ffffff;  /* خلفية البطاقات: أبيض صريح عشان تبين فوق الخلفية الجليدية */
+    --color-surface-container-low: #f1f5f9; /* تدرج أغمق بسيط للخلفيات الداخلية */
+    --color-surface-container-high: #e2e8f0; /* للـ Badges مثل (New York, US) */
+    --color-secondary-container: #ccfbf1;    /* للـ Badges المميزة (Pro Member) */
+    
+    --color-on-surface: #0f172a;         /* النصوص الأساسية: كحلي داكن جداً Slate 900 */
+    --color-on-surface-variant: #475569; /* النصوص الثانوية: رمادي متوسط Slate 600 */
+    --color-on-secondary-fixed-variant: #0f766e; /* نص البادج الفاتح */
+    --color-outline-variant: #e2e8f0;    /* الحدود (Borders): رمادي خفيف ونظيف Slate 200 */
+    --color-error: #dc2626;              /* لون زر تسجيل الخروج Red 600 */
+
+    /* ======================================================= */
+    /* 2. ألوان سينمائية عميقة للوضع الداكن (Dark Mode)        */
+    /* ======================================================= */
+    html.dark {
+        --color-primary: #818cf8;            /* بنفسجي فاتح ومضيء للعين Indigo 400 */
+        --color-primary-container: #1e1b4b;  /* خلفية الأيقونات (كحلي معتم جداً) */
+        
+        --color-page-bg: #090d16;            /* خلفية الصفحة: أسود غامق مائل للأزرق العميق */
+        --color-surface-container: #111827;  /* خلفية البطاقات: رمادي غامق جداً عشان تبرز الزجاجية Gray 900 */
+        --color-surface-container-low: #1f2937; /* تدرج أفتح للأسطح الداخلية Gray 800 */
+        --color-surface-container-high: #374151; /* للـ Badges الداكنة */
+        --color-secondary-container: #115e59;    /* بادج الممبر بالدارك */
+        
+        --color-on-surface: #f9fafb;         /* النصوص الأساسية: أبيض ناصع ومريح Gray 50 */
+        --color-on-surface-variant: #9ca3af; /* النصوص الثانوية: رمادي فاتح ناعم Gray 400 */
+        --color-on-secondary-fixed-variant: #2dd4bf; /* نص البادج بالدارك */
+        --color-outline-variant: #1f2937;    /* الحدود (Borders): داكنة وخفيفة Gray 800 */
+        --color-error: #f87171;              /* لون زر تسجيل الخروج بالدارك Red 400 */
+    }
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

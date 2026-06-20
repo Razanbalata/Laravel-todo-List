@@ -279,7 +279,7 @@
             </div>
         </section>
         <!-- Contextual Activity Feed (Mobile Hidden) -->
-        <div
+        {{-- <div
             class="hidden lg:block fixed right-gutter-desktop top-24 w-80 bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm p-stack-lg">
             <h3 class="font-headline-md text-headline-md mb-4">Upcoming</h3>
             <div class="space-y-4">
@@ -311,7 +311,7 @@
             <button
                 class="w-full mt-6 py-2 text-label-md font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors">See
                 all events</button>
-        </div>
+        </div> --}}
     </main>
     <!-- Mobile Bottom Navigation (Anchor Component) -->
     <nav
