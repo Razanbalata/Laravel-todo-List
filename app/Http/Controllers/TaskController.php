@@ -19,6 +19,7 @@ class TaskController extends Controller
         $priorities = Priority::all();
         $tasks = Task::query()->with(['category', 'priority']);
 
+        // for filter in url 
         if ($request->category) {
             $tasks->whereHas('category', function ($query) use ($request) {
                 $query->where('name', $request->category);

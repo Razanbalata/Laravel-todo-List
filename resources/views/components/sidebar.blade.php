@@ -33,14 +33,14 @@
              <span class="material-symbols-outlined">calendar_month</span>
              <span>Calendar</span>
          </a>
-         {{-- <a href="{{ route('profile') }}"
+         <a href="{{ route('profile.show') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
     {{ request()->routeIs('profile')
         ? 'text-primary font-bold bg-surface-container-highest'
         : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container' }}">
                 <span class="material-symbols-outlined">calendar_month</span>
-                <span>Calendar</span>
-            </a> --}}
+                <span>Profile</span>
+            </a>
      </nav>
      <div class="mt-auto space-y-2 border-t border-outline-variant pt-stack-lg">
          @if (!request()->routeIs('tasks.*'))

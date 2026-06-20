@@ -6,7 +6,9 @@
             <section class="mb-stack-lg animate-fade-in">
                 <div class="flex flex-col md:flex-row justify-between items-end gap-stack-md">
                     <div>
-                        <h2 class="font-headline-lg text-headline-lg text-on-surface">Good morning, Alex</h2>
+                        @auth
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface">Good morning, {{ auth()->user()->name }}</h2>
+                        @endauth
                         <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Here's what's happening with
                             your workspace today.</p>
                     </div>
