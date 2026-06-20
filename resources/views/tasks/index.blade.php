@@ -2,8 +2,8 @@
 
 
     <!-- Main Content Area -->
-    <main>
 
+        
         <div class="px-gutter-desktop py-stack-lg max-w-container-max mx-auto">
             <!-- Header & Action -->
             <div class="flex justify-between items-end mb-8">
@@ -152,5 +152,4 @@
                 </div>
             </div>
         </div>
-    </main>
 </x-layout>

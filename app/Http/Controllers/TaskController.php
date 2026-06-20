@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Priority;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -18,18 +19,18 @@ class TaskController extends Controller
         $priorities = Priority::all();
         $tasks = Task::query()->with(['category', 'priority']);
 
-        if($request->category){
+        if ($request->category) {
             $tasks->whereHas('category', function ($query) use ($request) {
                 $query->where('name', $request->category);
             });
         }
 
-        if($request->priority){
+        if ($request->priority) {
             $tasks->whereHas('priority', function ($query) use ($request) {
                 $query->where('name', $request->priority);
             });
         }
-        $tasks = $tasks->latest()->get();
+        $tasks = $tasks->where("user_id", Auth::id())->latest()->get();
 
         return view('tasks.index', [
             'tasks' => $tasks,
@@ -71,7 +72,7 @@ class TaskController extends Controller
             'priority_id' => $request->priority_id,
             'due_date' => $request->due_date,
             'is_completed' => false,
-            'user_id' => 1
+            'user_id' => Auth::id()
         ]);
 
         return redirect()->route('tasks.index');

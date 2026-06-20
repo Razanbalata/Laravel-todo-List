@@ -11,16 +11,9 @@
         </div>
     </div>
     <div class="flex items-center gap-6">
-        <div class="flex items-center gap-4">
-            <button
-                class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors"
-                data-icon="notifications">notifications</button>
-            <button
-                class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors"
-                data-icon="account_circle">account_circle</button>
-        </div>
-        <a
-        href='{{ route('tasks.create') }}'
+        <x-user-menu />
+
+        <a href='{{ route('tasks.create') }}'
             class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md hover:bg-primary-container transition-colors active:scale-95">Create
             Task</a>
     </div>
