@@ -54,7 +54,7 @@ class ProfileController extends Controller
         ]);
         // dd('Validation Passed');
 
-        if (! Hash::check(
+        if (!Hash::check(
             $request->current_password,
             Auth::user()->password
         )) {

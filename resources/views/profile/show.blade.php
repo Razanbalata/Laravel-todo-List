@@ -267,51 +267,50 @@
         });
 
         // الإمساك بالعناصر من الصفحة
-const lightBtn = document.getElementById('lightBtn');
-const darkBtn = document.getElementById('darkBtn');
-const htmlElement = document.documentElement;
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
+        const htmlElement = document.documentElement;
 
-// دالة لتحديث مظهر الأزرار (إضافة الخلفية البيضاء للزر الفعّال)
-function updateButtonUI(theme) {
-    if (theme === 'dark') {
-        darkBtn.classList.add('bg-white', 'shadow-sm', 'text-on-surface');
-        darkBtn.classList.remove('text-on-surface-variant');
-        
-        lightBtn.classList.remove('bg-white', 'shadow-sm', 'text-on-surface');
-        lightBtn.classList.add('text-on-surface-variant');
-    } else {
-        lightBtn.classList.add('bg-white', 'shadow-sm', 'text-on-surface');
-        lightBtn.classList.remove('text-on-surface-variant');
-        
-        darkBtn.classList.remove('bg-white', 'shadow-sm', 'text-on-surface');
-        darkBtn.classList.add('text-on-surface-variant');
-    }
-}
+        // دالة لتحديث مظهر الأزرار (إضافة الخلفية البيضاء للزر الفعّال)
+        function updateButtonUI(theme) {
+            if (theme === 'dark') {
+                darkBtn.classList.add('bg-white', 'shadow-sm', 'text-on-surface');
+                darkBtn.classList.remove('text-on-surface-variant');
 
-// 1. الفحص الأولي عند تحميل الصفحة
-const savedTheme = localStorage.getItem('theme');
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                lightBtn.classList.remove('bg-white', 'shadow-sm', 'text-on-surface');
+                lightBtn.classList.add('text-on-surface-variant');
+            } else {
+                lightBtn.classList.add('bg-white', 'shadow-sm', 'text-on-surface');
+                lightBtn.classList.remove('text-on-surface-variant');
 
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-    htmlElement.classList.add('dark');
-    updateButtonUI('dark');
-} else {
-    htmlElement.classList.remove('dark');
-    updateButtonUI('light');
-}
+                darkBtn.classList.remove('bg-white', 'shadow-sm', 'text-on-surface');
+                darkBtn.classList.add('text-on-surface-variant');
+            }
+        }
 
-// 2. أحداث الضغط على الأزرار (Event Listeners)
-lightBtn.addEventListener('click', () => {
-    htmlElement.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
-    updateButtonUI('light');
-});
+        // 1. الفحص الأولي عند تحميل الصفحة
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-darkBtn.addEventListener('click', () => {
-    htmlElement.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-    updateButtonUI('dark');
-});
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            htmlElement.classList.add('dark');
+            updateButtonUI('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+            updateButtonUI('light');
+        }
 
+        // 2. أحداث الضغط على الأزرار (Event Listeners)
+        lightBtn.addEventListener('click', () => {
+            htmlElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            updateButtonUI('light');
+        });
+
+        darkBtn.addEventListener('click', () => {
+            htmlElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            updateButtonUI('dark');
+        });
     </script>
 </x-layout>
