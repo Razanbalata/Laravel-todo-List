@@ -47,42 +47,73 @@
             <div class="col-span-12 lg:col-span-8 space-y-4">
                 @forelse ($tasks as $task)
                     <div
-                        class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-all group">
+                        class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-start gap-4 hover:shadow-md transition-all group">
+
+                        <!-- Checkbox -->
                         <input
-                            class="task-checkbox w-5 h-5 rounded-full border-2 border-outline-variant text-secondary focus:ring-secondary cursor-pointer"
+                            class="mt-1 h-5 w-5 rounded-full border-2 border-outline-variant text-secondary focus:ring-secondary cursor-pointer"
                             id="task{{ $task->id }}" type="checkbox">
+
+                        <!-- Content -->
                         <div class="flex-grow">
-                            <label
-                                class="font-body-lg text-body-lg text-on-surface block cursor-pointer transition-colors"
-                                for="task{{ $task->id }}">{{ $task->title }}</label>
-                            <div class="flex items-center gap-4 mt-1">
-                                <span
-                                    class="flex items-center gap-1 text-label-sm font-label-sm text-on-surface-variant">
+
+                            <!-- Title -->
+                            <label class="font-body-lg text-body-lg text-on-surface block cursor-pointer font-semibold"
+                                for="task{{ $task->id }}">
+                                {{ $task->title }}
+                            </label>
+
+                            <!-- Description -->
+                            @if ($task->description)
+                                <p class="text-sm text-on-surface-variant mt-1 line-clamp-2">
+                                    {{ $task->description }}
+                                </p>
+                            @endif
+
+                            <!-- Meta Info -->
+                            <div class="flex flex-wrap items-center gap-3 mt-2">
+
+                                <!-- Date -->
+                                <span class="flex items-center gap-1 text-label-sm text-on-surface-variant">
                                     <span class="material-symbols-outlined text-[14px]">calendar_today</span>
                                     {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('M j, Y g:i A') : 'No due date' }}
                                 </span>
+
+                                <!-- Category -->
                                 <span
-                                    class="px-2 py-0.5 bg-surface-container-high text-primary rounded text-[10px] font-bold uppercase tracking-tighter">{{ $task->category->name }}</span>
+                                    class="px-2 py-0.5 bg-primary-container text-on-primary-container rounded-full text-[11px] font-medium uppercase tracking-wide">
+                                    {{ $task->category->name }}
+                                </span>
                             </div>
                         </div>
+
+                        <!-- Priority -->
                         <span
-                            class="px-2 py-1 bg-error-container text-on-error-container rounded-lg text-label-sm font-label-sm">{{ $task->priority->name }}</span>
-                        <div
-                            class="md:col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <a href='{{ route('tasks.edit', $task->id) }}'
-                                class="p-2 text-on-surface-variant hover:bg-surface-container hover:text-primary rounded-lg transition-all"
+                            class="px-3 py-1 rounded-full text-xs font-bold
+        {{ $task->priority->id == 1 ? 'bg-red-100 text-red-700' : '' }}
+        {{ $task->priority->id == 2 ? 'bg-yellow-100 text-yellow-700' : '' }}
+        {{ $task->priority->id == 3 ? 'bg-green-100 text-green-700' : '' }}">
+                            {{ $task->priority->name }}
+                        </span>
+
+                        <!-- Actions -->
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+
+                            <a href="{{ route('tasks.edit', $task->id) }}"
+                                class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition"
                                 title="Edit">
-                                <span class="material-symbols-outlined" data-icon="edit">edit</span>
+                                <span class="material-symbols-outlined text-[20px]">edit</span>
                             </a>
 
                             <button
                                 onclick="confirm('Are you sure?') ? document.getElementById('deletetask{{ $task->id }}').submit() : null"
-                                class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-all"
-                                title="More">
-                                <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                                class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-error transition"
+                                title="Delete">
+                                <span class="material-symbols-outlined text-[20px]">delete</span>
                             </button>
-                            <form style="display:none;" id="deletetask{{ $task->id }}"
-                                action="{{ route('tasks.destroy', $task->id) }}" method="post">
+
+                            <form id="deletetask{{ $task->id }}" action="{{ route('tasks.destroy', $task->id) }}"
+                                method="POST" class="hidden">
                                 @csrf
                                 @method('DELETE')
                             </form>
@@ -138,27 +169,16 @@
                     <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-4">
                         Focus by Category</h3>
                     <div class="space-y-4">
+                        @foreach ($categories as $category)
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-3">
                                 <span class="w-3 h-3 rounded-full bg-primary"></span>
-                                <span class="font-body-md text-body-md">Work</span>
+                                <span class="font-body-md text-body-md">{{ $category->name }}</span>
                             </div>
-                            <span class="font-label-md text-label-md">12 Tasks</span>
+                            <span class="font-label-md text-label-md">{{$category->tasks_count }} Tasks</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <span class="w-3 h-3 rounded-full bg-secondary"></span>
-                                <span class="font-body-md text-body-md">Personal</span>
-                            </div>
-                            <span class="font-label-md text-label-md">4 Tasks</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <span class="w-3 h-3 rounded-full bg-tertiary"></span>
-                                <span class="font-body-md text-body-md">Health</span>
-                            </div>
-                            <span class="font-label-md text-label-md">2 Tasks</span>
-                        </div>
+                        @endforeach
+                       
                     </div>
                 </div>
                 <!-- Decorative/Atmospheric Graphic Card -->

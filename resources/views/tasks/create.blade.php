@@ -102,11 +102,12 @@
                 </div>
                 <!-- Actions -->
                 <div class="pt-stack-md flex flex-col sm:flex-row items-center justify-end gap-stack-md">
-                    <button
+                    <a
+                    href='{{ route('tasks.index') }}'
                         class="w-full sm:w-auto px-6 py-2.5 font-label-md text-label-md text-primary-container hover:bg-surface-container transition-colors rounded-lg"
                         type="button">
                         Cancel
-                    </button>
+                    </a>
                     <button
                         class="w-full sm:w-auto px-8 py-3 bg-primary-container text-on-primary-container hover:bg-primary transition-all rounded-lg font-headline-md text-headline-md active:scale-95 flex items-center justify-center gap-2"
                         type="submit">

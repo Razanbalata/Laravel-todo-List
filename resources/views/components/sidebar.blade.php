@@ -25,7 +25,7 @@
              <span class="material-symbols-outlined">format_list_bulleted</span>
              <span>Task List</span>
          </a>
-         <a href="{{ route('calendar') }}"
+         <a href="{{ route('calendar.index') }}"
              class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
     {{ request()->routeIs('calendar')
         ? 'text-primary font-bold bg-surface-container-highest'

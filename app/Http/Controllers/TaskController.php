@@ -15,7 +15,9 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::withCount(['tasks' => function ($query) {
+            $query->where('user_id', auth()->id());
+        }])->get();
         $priorities = Priority::all();
         $tasks = Task::query()->with(['category', 'priority']);
 

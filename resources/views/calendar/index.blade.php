@@ -7,17 +7,23 @@
             <!-- Calendar Controls -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    <h2 class="font-headline-lg text-headline-lg text-on-surface">September 2024</h2>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface">{{ \Carbon\Carbon::create($year, $month)->format('F Y') }}
+                    </h2>
                     <div class="flex bg-surface-container-low rounded-lg p-1">
-                        <button class="p-1 hover:bg-surface-container-highest rounded-md transition-colors">
+                        <a
+                         href="{{ route('calendar.index', ['month' => $month - 1, 'year' => $year]) }}"
+                        class="p-1 hover:bg-surface-container-highest rounded-md transition-colors">
                             <span class="material-symbols-outlined">chevron_left</span>
-                        </button>
-                        <button class="p-1 hover:bg-surface-container-highest rounded-md transition-colors">
+                        </a>
+                        <a
+                        href="{{ route('calendar.index', ['month' => $month + 1, 'year' => $year]) }}"
+                        class="p-1 hover:bg-surface-container-highest rounded-md transition-colors">
                             <span class="material-symbols-outlined">chevron_right</span>
-                        </button>
+                        </a>
                     </div>
-                    <button
-                        class="px-4 py-2 text-label-md font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors">Today</button>
+                    <a
+                    href="{{ route('calendar.index') }}"
+                        class="px-4 py-2 text-label-md font-bold text-primary hover:bg-primary-fixed rounded-lg transition-colors">Today</a>
                 </div>
                 <div class="flex items-center gap-2 bg-surface-container-low p-1 rounded-xl">
                     <button
@@ -42,7 +48,51 @@
                     <div class="py-3 text-center text-label-sm font-bold text-on-surface-variant">SAT</div>
                 </div>
                 <!-- Days Grid -->
+
                 <div class="flex-1 grid grid-cols-7 auto-rows-fr">
+
+                    {{-- empty days --}}
+                    @for ($i = 0; $i < $startDay; $i++)
+                        <div class="border-r border-b border-outline-variant p-2 bg-surface-container-low opacity-40">
+                        </div>
+                    @endfor
+
+                    {{-- real days --}}
+                    @for ($day = 1; $day <= $daysInMonth; $day++)
+
+                        @php
+                            $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
+                        @endphp
+
+                        <div
+                            class="border-r border-b border-outline-variant p-2 hover:bg-surface-container-low transition-colors cursor-pointer group">
+
+                            <span class="text-label-md font-bold">{{ $day }}</span>
+
+                            <div class="mt-2 space-y-1">
+
+                                @if (isset($tasksByDate[$date]))
+                                    @foreach ($tasksByDate[$date] as $task)
+                                        <div
+                                            class="px-2 py-1 rounded text-[10px] font-bold truncate
+                            {{ $task->priority_id == 1 ? 'bg-error-container text-on-error-container' : '' }}
+                            {{ $task->priority_id == 2 ? 'bg-secondary-container text-on-secondary-container' : '' }}
+                            {{ $task->priority_id == 3 ? 'bg-primary-container text-on-primary-container' : '' }}
+                        ">
+                                            {{ $task->title }}
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                            </div>
+
+                        </div>
+
+                    @endfor
+
+                </div>
+
+                {{-- <div class="flex-1 grid grid-cols-7 auto-rows-fr">
                     <!-- Week 1 (Partial) -->
                     <div
                         class="border-r border-b border-outline-variant p-2 bg-surface-container-low opacity-40 min-h-[120px]">
@@ -225,7 +275,7 @@
                         class="border-r border-b border-outline-variant p-2 hover:bg-surface-container-low transition-colors cursor-pointer group">
                         <span class="text-label-md font-bold">29</span>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </section>
         <!-- Contextual Activity Feed (Mobile Hidden) -->
