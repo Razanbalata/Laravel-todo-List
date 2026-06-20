@@ -6,12 +6,14 @@ use App\Http\Controllers\TaskController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/dashboard', function(){
+Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->name('dashboard');
-Route::get('/calender', function(){
+Route::get('/calender', function () {
     return view('calender.calender');
 })->name('calendar');
 Route::get('/tasks', [TaskController::class, 'index']);
 
-Route::resource('tasks', TaskController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('tasks', TaskController::class);
+});
